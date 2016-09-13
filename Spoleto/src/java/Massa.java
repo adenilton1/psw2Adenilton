@@ -14,9 +14,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author ra21505955
+ * @author adenilton
  */
-public class Home extends HttpServlet {
+public class Massa extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -27,63 +27,25 @@ public class Home extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Spoleto</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Bem Vindo ao Spoleto</h1>");
-
-            Pedido pedido = null;
-            HttpSession sessao = request.getSession();
-            if (sessao.isNew()) {
-                pedido = new Pedido();
-                sessao.setAttribute("ped", pedido);
-            } else {
-                pedido = (Pedido) sessao.getAttribute("ped");
-            }
-
-            if (pedido.getMolho() == null) {
-
-                out.println("<h2><a href=\"molhos.html\">Escolha um Molho</a></h2>");
-
-            } else {
-
-                out.println("<h2>Molho escolhido:" + pedido.getMolho() + 
-                        "<a href=\"molhos.html\">(TrocaR)o</a></h2>");
-
-            }
-            
-    
-            if (sessao.isNew()) {
-                pedido = new Pedido();
-                sessao.setAttribute("pedo", pedido);
-            } else {
-                pedido = (Pedido) sessao.getAttribute("pedo");
-            }
-            if (pedido.getMassa() == null) {
-
-                out.println("<h2><a href=\"massas.html\">Escolha uma Massa</a></h2>");
-
-            } else {
-
-                out.println("<h2>Massa escolhida:" + pedido.getMassa() + 
-                        "<a href=\"massas.html\">(Trocar)o</a></h2>");
-
-            }
-            
-            out.println("<h2><a href=\"Ingredientes\">Escolha um Ingredientes</a></h2>");
-            out.println("</body>");
-            out.println("</html>");
+      
+        HttpSession sessao = request.getSession(false);
+        
+        if(sessao !=null){
+           Pedido p = (Pedido) sessao.getAttribute("pedo");
+           
+           String escolha = request.getParameter("escolha");
+           
+           p.setMassa(escolha);
+           
+           sessao.setAttribute("pedo",p);
         }
+        
+        request.getRequestDispatcher("Home").forward(request, response);
+        
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
