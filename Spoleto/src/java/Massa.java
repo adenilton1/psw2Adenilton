@@ -34,13 +34,13 @@ public class Massa extends HttpServlet {
         HttpSession sessao = request.getSession(false);
         
         if(sessao !=null){
-           Pedido p = (Pedido) sessao.getAttribute("pedo");
+           Pedido p = (Pedido) sessao.getAttribute("ped");
            
            String escolha = request.getParameter("escolha");
            
            p.setMassa(escolha);
            
-           sessao.setAttribute("pedo",p);
+           sessao.setAttribute("ped",p);
         }
         
         request.getRequestDispatcher("Home").forward(request, response);
